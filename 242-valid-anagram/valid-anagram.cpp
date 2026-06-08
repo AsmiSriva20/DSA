@@ -1,9 +1,15 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        sort(s.begin(),s.end());
-        sort(t.begin(),t.end());
-        if(s==t) return true;
-        else return false;
+        if(s.size()!=t.size()) return false;
+        int frequency[26]={};
+        for(int i=0;i<s.size();i++){
+            frequency[s[i]-'a']++;
+            frequency[t[i]-'a']--;
         }
+        for(int i=0;i<26;i++){
+            if(frequency[i]!=0) return false;
+        }
+        return true;
+    }
 };
