@@ -1,15 +1,20 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        if(s.size()!=t.size()) return false;
-        int frequency[26]={};
-        for(int i=0;i<s.size();i++){
-            frequency[s[i]-'a']++;
-            frequency[t[i]-'a']--;
+        if (s.size() != t.size()) return false;
+
+        unordered_map<char, int> mp;
+
+        for (char c : s)
+            mp[c]++;
+
+        for (char c : t) {
+            mp[c]--;
+
+            if (mp[c] < 0)
+                return false;
         }
-        for(int i=0;i<26;i++){
-            if(frequency[i]!=0) return false;
-        }
+
         return true;
     }
 };
