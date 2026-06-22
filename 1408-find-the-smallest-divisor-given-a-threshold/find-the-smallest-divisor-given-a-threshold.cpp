@@ -1,9 +1,6 @@
 class Solution {
 public:
-    int max_element(vector<int> &arr){
-        sort(arr.begin(),arr.end());
-        return arr[arr.size()-1];
-    }
+   
     int sum_of_ceils(vector<int> &arr, int k){
         int sum=0;
         for(int i=0;i<arr.size();i++){
@@ -13,7 +10,7 @@ public:
     }
 
     int smallestDivisor(vector<int>& nums, int threshold) {
-        int low=1; int high = max_element(nums);
+        int low=1; int high  = *max_element(nums.begin(), nums.end());
         
         while(low<=high){
             int mid= low+(high-low)/2;
