@@ -11,17 +11,15 @@
  */
 class Solution {
 public:
-    void recfucn(TreeNode* root, int level, vector<int>&res){
-       if(root==NULL) return;
-       if(level==res.size()) res.push_back(root->val);
-       recfucn(root->right,level+1,res);
-       recfucn(root->left,level+1,res);
+    void function(TreeNode* root, int level, vector<int> &result){
+        if(root ==NULL) return;
+        if(level==result.size()) result.push_back(root->val);
+        function(root->right,level+1,result);
+        function(root->left,level+1,result);
     }
-
     vector<int> rightSideView(TreeNode* root) {
-        vector<int> result;
-        recfucn(root,0,result);
-        return result;
-        
+        vector<int> ans;
+        function(root,0,ans);
+        return ans;
     }
 };
