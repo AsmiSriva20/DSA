@@ -20,7 +20,7 @@ public:
 
     vector<string> binaryTreePaths(TreeNode* root) {
         vector<string> ans;
-        if (root) findPath(root, ans, "");
+        findPath(root, ans, "");
         return ans;
     }
 };
