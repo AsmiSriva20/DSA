@@ -11,18 +11,22 @@
  */
 class Solution {
 public:
-    void traversal(TreeNode* root, vector<int> &vec){
-        if(root==NULL) return;
-        vec.push_back(root->val);
-        traversal(root->left,vec);
-        traversal(root->right,vec);
-
+    void inorder(int &count,int &ans, TreeNode* root, int k){
+    if(root==NULL) return;
+    inorder(count,ans,root->left,k);
+    count++;
+    if(count==k){
+        ans=root->val;
+        return;
     }
+    inorder(count,ans,root->right,k);
+    }
+
     int kthSmallest(TreeNode* root, int k) {
-        vector<int> vec;
-        traversal(root,vec);
-        sort(vec.begin(),vec.end());
-        return vec[k-1];
+     int count=0;
+     int ans;
+     inorder(count,ans,root,k);
+     return ans;
         
     }
 };
