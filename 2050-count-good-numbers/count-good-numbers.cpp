@@ -10,7 +10,7 @@ public:
         if (n % 2 == 0)
             return (half * half) % MOD;
 
-        return (a * half % MOD * half) % MOD;
+        return (a * half % MOD * half%MOD) % MOD;
     }
 
     int countGoodNumbers(long long n) {
