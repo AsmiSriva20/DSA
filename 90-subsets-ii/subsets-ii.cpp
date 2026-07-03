@@ -1,23 +1,21 @@
 class Solution {
 public:
-
-    set<vector<int>> result;
-    void pickornotpick(int i, vector<int> & nums, vector<int>& temp){
+    set<vector<int>> st;
+    void func( vector<int> &nums, vector<int> & temp, int i){
         if(i>=nums.size()){
-         result.insert(temp);
-         return;
+            st.insert(temp);
+            return;
         }
         temp.push_back(nums[i]);
-        pickornotpick(i+1,nums,temp);
+        func(nums,temp,i+1);
         temp.pop_back();
-        pickornotpick(i+1,nums,temp);
+        func(nums,temp,i+1);
     }
-
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
-     vector<int> temp;
-     sort(nums.begin(),nums.end());
-     pickornotpick(0,nums,temp);
-     return vector<vector<int>>(result.begin(),result.end());
+        vector<int> temp;
+        sort(nums.begin(),nums.end());
+        func(nums,temp,0);
+        return vector<vector<int>>(st.begin(),st.end());
         
     }
 };
