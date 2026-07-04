@@ -1,9 +1,9 @@
 class Solution {
 public:
     
-    void generate(int i,vector<int>& candidates,int target,vector<int> &stored,vector<vector<int>> &ans){
+    void generate(int i,vector<int>& candidates,int target,vector<int> &stored,set<vector<int>> &ans){
         if(i==candidates.size()){
-            if(target==0)  ans.push_back(stored);
+            if(target==0)  ans.insert(stored);
             return;
         }
         if(candidates[i]<=target){
@@ -18,8 +18,9 @@ public:
     }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         vector<int> stored;
-        vector<vector<int>> ans;
+        set<vector<int>> ans;
         generate(0,candidates,target,stored,ans);
-        return ans;
+        
+        return vector<vector<int>>(ans.begin(),ans.end());
     }
 };
