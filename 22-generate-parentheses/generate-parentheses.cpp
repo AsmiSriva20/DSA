@@ -2,37 +2,28 @@ class Solution {
 public:
     vector<string> result;
 
-    bool isValid(string s){
-        int count=0;
-        for(int i=0;i<s.size();i++){
-            if(s[0]==')') return false;
-            if(s[i]=='(') count++;
-            else count--;    
-            if(count<0) return false;
-        }
-        if(count==0) return true;
-        else return false;
-    }
-
-    void solve(int n,string &s){
+    void solve(int n,string &s, int open, int close){
         if(s.size()==2*n){
-           if(isValid(s))
              result.push_back(s);
              return;
            }
+        if(open<n){
         s.push_back('(');
-        solve(n,s);
+        solve(n,s,open+1,close);
         s.pop_back();
-
+        }
+        if(close<open){
         s.push_back(')');
-        solve(n,s);  
+        solve(n,s,open,close+1);  
         s.pop_back();
+        }
         
     }
    
     vector<string> generateParenthesis(int n) {
         string curr = "";
-        solve(n, curr);
+
+        solve(n, curr,0,0);
         return result;
 
         
