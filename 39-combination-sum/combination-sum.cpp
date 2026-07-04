@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    vector<vector<int>> generate(int i,vector<int>& candidates, int target, vector<int> &stored,vector<vector<int>> &ans){
+    vector<vector<int>> generate(int i,vector<int>& candidates,int target,vector<int> &stored,vector<vector<int>> &ans){
         if(i==candidates.size()){
             if(target==0)  ans.push_back(stored);
             return ans;
