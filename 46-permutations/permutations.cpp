@@ -1,20 +1,32 @@
 class Solution {
 public:
-    void perms(int i,vector<vector<int>>& res,vector<int>& nums){
-        if(i==nums.size()){
-            res.push_back(nums);
+    vector<vector<int>> result;
+    int n;
+    unordered_set<int> this_set;
+
+    void solve(vector<int>& nums, vector<int>& temp) {
+        if (temp.size() == n) {
+            result.push_back(temp);
             return;
         }
 
-        for(int j=i;j<nums.size();j++){
-            swap(nums[i],nums[j]);
-            perms(i+1,res,nums);
-            swap(nums[i],nums[j]);
+        for (int i = 0; i < n; i++) {
+            if (this_set.find(nums[i]) == this_set.end()) {
+                this_set.insert(nums[i]);
+                temp.push_back(nums[i]);
+
+                solve(nums, temp);
+
+                temp.pop_back();
+                this_set.erase(nums[i]);
+            }
         }
     }
+
     vector<vector<int>> permute(vector<int>& nums) {
-        vector<vector<int>> res;
-        perms(0,res,nums);
-        return res ;
+        n = nums.size();
+        vector<int> temp;
+        solve(nums, temp);
+        return result;
     }
 };
