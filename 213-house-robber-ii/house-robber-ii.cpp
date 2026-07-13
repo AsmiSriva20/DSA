@@ -3,7 +3,6 @@ public:
     int solve(vector<int> &nums, int idx, vector<int> &dp, int start){
         if(idx<0) return 0;
         if (idx<start) return 0;
-        if (nums.size() == 1) return nums[0];
         if(dp[idx]!=-1) return dp[idx];
         int take = nums[idx] + solve(nums,idx-2,dp,start);
         int not_take= solve(nums,idx-1,dp,start);
