@@ -1,12 +1,23 @@
 class Solution {
 public:
+    int solve(vector<vector<int>> &triangle,vector<vector<int>> &dp, int i,int j){
+        int rows=triangle.size();
+        int cols=triangle[0].size();
+        if(i<0 || j<0 || i>=rows|| j>=triangle[i].size()) return INT_MAX;
+        if(i==rows-1) return triangle[i][j];
+        if(dp[i][j]!=INT_MAX) return dp[i][j];
+        int down = solve(triangle,dp,i+1,j);
+        int diag= solve(triangle,dp,i+1,j+1);
+        int ans=min(down,diag);
+        if(ans==INT_MAX) return INT_MAX;
+        return dp[i][j]= ans+triangle[i][j];
+        
+    }
     int minimumTotal(vector<vector<int>>& triangle) {
-        int n=triangle.size();
-        for(int i=n-2;i>=0;i--){
-            for(int j=0;j<triangle[i].size();j++){
-                triangle[i][j]+=min(triangle[i+1][j],triangle[i+1][j+1]);
-            }
-        }
-        return triangle[0][0];
+        int rows=triangle.size();
+        int cols=triangle[0].size();
+        vector<vector<int>> dp(rows, vector<int>(rows, INT_MAX));
+        
+        return solve(triangle,dp,0,0);   
     }
 };
