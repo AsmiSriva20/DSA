@@ -1,7 +1,7 @@
 class Solution {
 public:
     int maxCoins(vector<int>& nums) {
-        //including the nums[-1] and nums[n]
+        
         int n = nums.size() + 2;        
         vector<vector<int>> dp(n, vector<int>(n));
         vector<int> new_nums(n, 1);
