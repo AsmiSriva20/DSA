@@ -1,52 +1,78 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
+        queue <pair <int, int>> q;
+
         int m = grid.size();
         int n = grid[0].size();
 
-        queue<pair<int, int>> q;
-        int fresh = 0;
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 2)
-                    q.push({i, j});
-                else if (grid[i][j] == 1)
-                    fresh++;
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(grid[i][j] == 2){
+                    q.push({i , j});
+                }
             }
         }
 
-        if (fresh == 0)
-            return 0;
+        int ans = -1;
 
-        int minutes = 0;
-        vector<int> dr = {-1, 1, 0, 0};
-        vector<int> dc = {0, 0, -1, 1};
+        while(!q.empty()){
+            int sz = q.size();
+            ans++;
 
-        while (!q.empty() && fresh > 0) {
-            int size = q.size();
-
-            while (size--) {
-                auto [r, c] = q.front();
+            for(int i = 0; i<sz; i++){
+                auto f = q.front();
                 q.pop();
+                
+                int row = f.first;
+                int col = f.second;
 
-                for (int k = 0; k < 4; k++) {
-                    int nr = r + dr[k];
-                    int nc = c + dc[k];
+                if(row - 1 >= 0) {
+                    if(grid[row-1][col] == 1){
+                        grid[row-1][col] = 2;
+                        q.push({row-1 , col});
+                    }
+                }
 
-                    if (nr >= 0 && nr < m && nc >= 0 && nc < n &&
-                        grid[nr][nc] == 1) {
+                if(row + 1 < m){
+                    if(grid[row + 1][col] == 1){
+                        grid[row+1][col] = 2;
+                        q.push({row+1 , col});
+                    }
+                }
 
-                        grid[nr][nc] = 2;
-                        fresh--;
-                        q.push({nr, nc});
+
+                if(col - 1 >= 0){
+                    if(grid[row][col - 1] == 1){
+                        grid[row][col-1] = 2;
+                        q.push({row , col-1});
+                    }
+                }
+
+
+                if(col + 1 < n){
+                    if(grid[row][col + 1] == 1){
+                        grid[row][col+1] = 2;
+                        q.push({row , col+1});
                     }
                 }
             }
 
-            minutes++;
+            
         }
 
-        return fresh == 0 ? minutes : -1;
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(grid[i][j] == 1){
+                    return -1;
+                }
+            }
+        }
+
+        if(ans == -1){
+            return 0;
+        }
+
+        return ans;
     }
 };
