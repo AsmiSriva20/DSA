@@ -1,36 +1,35 @@
 class Solution {
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        queue<pair<int, int>> q;
-        int m = grid.size();
-        int n = grid[0].size();
-        vector<vector<int>> vis(m, vector<int>(n, -1));
+        int n= grid.size();
+        if(grid[0][0]==1 || grid[n-1][n-1]==1) return -1;
+        if(n==1) return 1;
+        queue<pair<int,int>>q;
+        q.push({0,0});
+        grid[0][0]=1;
 
-        if (grid[0][0] == 0) {
-            q.push({0, 0});
-            vis[0][0] = 1;
-        };
+        vector<pair<int,int>> dir ={{1,0},{0,1},{1,1},{-1,-1},{-1,0},{0,-1},{-1,1},{1,-1}};
+        int steps=1;
 
-        while (!q.empty()) {
-            int nRow[] = {-1, -1, -1, 0, 0, 1, 1, 1};  int nCol[] = {-1, 0, 1, -1, 1, -1, 0, 1};
-
-            auto [row, col] = q.front();
-            q.pop();
-
-            for (int i = 0; i < 8; i++) {
-                int adjRow = row + nRow[i];
-                int adjCol = col + nCol[i];
-
-                if (adjRow >= 0 && adjRow < m &&
-                    adjCol >= 0 && adjCol < n &&
-                  grid[adjRow][adjCol] == 0 &&
-                    vis[adjRow][adjCol] == -1) {
-
-                    vis[adjRow][adjCol] = vis[row][col] + 1;
-                    q.push({adjRow, adjCol});
+        while(!q.empty()){
+            int s=q.size();
+            while(s--){
+                auto curr = q.front();
+                q.pop();
+                int row= curr.first;
+                int col=curr.second;
+                for(auto it: dir){
+                    int nr=row+it.first;
+                    int nc=col+it.second;
+                    if(nr>=0 && nc>=0 && nr<n && nc<n && grid[nr][nc]==0){
+                        if(nr==n-1 && nc==n-1) return steps+1;
+                       q.push({nr,nc});
+                       grid[nr][nc]=1;
+                    }
                 }
             }
+            steps++;
         }
-        return vis[m - 1][n - 1];
+        return -1;
     }
 };
