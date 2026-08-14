@@ -11,6 +11,7 @@ public:
         queue<pair<int,int>>q;
         q.push({src,0});
        vector<int>minprice(n,INT_MAX);
+       minprice[src] = 0;
        int stops=0;
        while(!q.empty()&& stops<=k){
         int size=q.size();
