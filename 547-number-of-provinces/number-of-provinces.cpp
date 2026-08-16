@@ -1,36 +1,49 @@
+class dsu{
+    vector<int> parent,size;
+    public:
+    dsu(int n){
+        parent.resize(n+1);
+        size.resize(n+1,1);
+        for(int i=0;i<=n;i++) parent[i]=i;
+    }
+    int findUParent(int node){
+        if(parent[node]==node) return node;
+        return parent[node]= findUParent(parent[node]);
+    }
+    void unionbys(int n, int m){
+        int u_n=findUParent(n);
+        int u_m=findUParent(m);
+        if(u_n==u_m) return;
+        if(size[u_n]<size[u_m]){
+            parent[u_n]=u_m;
+            size[u_m]+=size[u_n];
+        }
+        else if(size[u_m]<size[u_n]){
+            parent[u_m]=u_n;
+            size[u_n]+=size[u_m];
+        }
+        else{
+            parent[u_m]=u_n;
+            size[u_n]+=size[u_m];
+        }
+       
+    }
+};
 class Solution {
 public:
-   void bfs(int begin,vector<vector<int>>& isConnected, vector<int>&vis){
-        queue<int>q;
-        q.push(begin);
-        vis[begin]=1;
-        while(!q.empty()){
-            int node=q.front();
-            q.pop();
-            
-            for(int i=0;i<isConnected.size();i++){
-                if(isConnected[node][i]==1 && !vis[i]){
-                    vis[i]=1;
-                    q.push(i);
-                }
-            }
-        }
-    
-
-   }
-
     int findCircleNum(vector<vector<int>>& isConnected) {
-        int n = isConnected.size();
-        vector<int> vis(n, 0);
-        int provinces = 0;
-
-        for (int i = 0; i < n; i++) {
-            if (!vis[i]) {
-                provinces++;
-                bfs(i, isConnected, vis);
+        int n=isConnected.size();
+        dsu ds(n);
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(isConnected[i][j])
+                ds.unionbys(i,j);
             }
         }
-
-        return provinces;
+        int cnt=0;
+        for(int i=0;i<n;i++){
+            if(ds.findUParent(i)==i) cnt++;
+        }
+        return cnt;
     }
 };
