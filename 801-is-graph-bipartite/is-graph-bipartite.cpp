@@ -15,15 +15,13 @@ public:
                 int node = q.front();
                 q.pop();
 
-                for (int n : graph[node]) {
-                    
-                    if (color[n] == -1) {
-                        color[n] = 1 - color[node];
-                        q.push(n);
+                for (int nei : graph[node]) {
+                   
+                    if (color[nei] == -1) {
+                        color[nei] = 1 - color[node];
+                        q.push(nei);
                     }
-
- 
-                    else if (color[n] == color[node]) {
+                    else if (color[nei] == color[node]) {
                         return false;
                     }
                 }
