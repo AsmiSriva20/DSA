@@ -1,45 +1,70 @@
 class Solution {
 public:
-    void dfs(string email, unordered_map<string, vector<string>>& graph,
-             unordered_set<string>& visited, vector<string>& emails) {
-      visited.insert(email);
-      emails.push_back(email);
+    vector<int> parent, size;
 
-        for (auto next : graph[email]) {
-            if (!visited.count(next)) {
-                dfs(next, graph, visited, emails);
-            }
+    int find(int x) {
+        if (x == parent[x]) return x;
+        return parent[x] = find(parent[x]);
+    }
+
+    void unionBySize(int u, int v) {
+        int pu = find(u);
+        int pv = find(v);
+
+        if (pu == pv) return;
+        if (size[pu] < size[pv]) {
+            parent[pu] = pv;
+            size[pv] += size[pu];
+        }
+        else {
+            parent[pv] = pu;
+            size[pu] += size[pv];
         }
     }
 
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n = accounts.size();
 
-        unordered_map<string, vector<string>> graph;
-        unordered_map<string, string> name;
-        for (auto account : accounts) {
-            string firstEmail = account[1];
-            name[firstEmail] = account[0];
-            for (int i = 2; i < account.size(); i++) {
-                name[account[i]] = account[0];
-                graph[firstEmail].push_back(account[i]);
-                graph[account[i]].push_back(firstEmail);
+        parent.resize(n);
+        size.resize(n, 1);
+
+        for (int i = 0; i < n; i++)
+            parent[i] = i;
+
+        unordered_map<string, int> emailOwner;
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < accounts[i].size(); j++) {
+
+                string email = accounts[i][j];
+
+                if (emailOwner.find(email) == emailOwner.end()) {
+                    emailOwner[email] = i;
+                }
+                else {
+                    unionBySize(i, emailOwner[email]);
+                }
             }
+        }     
+        vector<vector<string>> merged(n);
+
+        for (auto& [email, owner] : emailOwner) {
+            int parentAccount = find(owner);
+            merged[parentAccount].push_back(email);
         }
 
         vector<vector<string>> ans;
-        unordered_set<string> visited;
-        for (auto& [email, person] : name) {
 
-            if (visited.count(email))
+        for (int i = 0; i < n; i++) {
+            if (merged[i].empty())
                 continue;
-            vector<string> emails;
-            dfs(email, graph, visited, emails);
-            sort(emails.begin(), emails.end());
+
+            sort(merged[i].begin(), merged[i].end());
 
             vector<string> account;
-            account.push_back(person);
-            for (auto e : emails)
-                account.push_back(e);
+            account.push_back(accounts[i][0]);
+
+            for (auto email : merged[i])
+                account.push_back(email);
 
             ans.push_back(account);
         }
