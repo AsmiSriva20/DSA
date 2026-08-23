@@ -1,6 +1,6 @@
 class MyStack {
 private:
-    std::queue<int> q;
+    queue<int> q;
 
 public:
     MyStack() {}
