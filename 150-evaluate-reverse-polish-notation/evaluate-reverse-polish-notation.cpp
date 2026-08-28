@@ -11,7 +11,7 @@ public:
             return a/b;
         }
         if(ch=="*"){
-            return (long)a*(long)b;
+            return a*b;
         }
         else return 0;
     }
