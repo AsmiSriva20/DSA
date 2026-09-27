@@ -1,7 +1,7 @@
 class Solution {
 public:
     int solve(int i,vector<int>& prices,int buy,vector<vector<int>>&dp){
-        int n= prices.size();
+        int n = prices.size();
         if(i==n) return 0;
         if(dp[i][buy]!=-1) return dp[i][buy];
         int profit=0;
