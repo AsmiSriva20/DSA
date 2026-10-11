@@ -17,8 +17,7 @@ public:
         if(list1->val<list2->val){
           result=list1;
           result->next=mergeTwoLists(list1->next,list2);
-        }
-        if(list1->val>=list2->val){
+        }else{
           result=list2;
           result->next=mergeTwoLists(list1,list2->next);
         }
