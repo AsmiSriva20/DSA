@@ -7,7 +7,6 @@ public:
          if(i<0 || j<0 || i>=m || j>=n|| board[i][j]!=word[index]||board[i][j]=='$') return false;
          char temp=board[i][j];
          vector<pair<int,int>>dir={{0,1},{1,0},{-1,0},{0,-1}};
-         board[i][j]=temp;
          board[i][j]='$';
          for(auto it:dir){
             int nr= i+it.first;
