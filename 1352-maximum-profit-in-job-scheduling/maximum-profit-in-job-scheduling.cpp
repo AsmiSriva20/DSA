@@ -4,7 +4,7 @@ public:
         if(i==jobs.size()) return 0;
         if(dp[i]!=-1) return dp[i];
         int next = lower_bound(jobs.begin() + i + 1, jobs.end(),
-                       vector<int>{jobs[i][1]}) - jobs.begin();
+                       vector<int>{jobs[i][1]}) - jobs.begin();// kyaaaa
         int skip= solve(i+1,jobs,dp);
         int take= jobs[i][2]+ solve(next,jobs,dp);
         return dp[i]=max(skip,take);
