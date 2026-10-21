@@ -1,34 +1,24 @@
-
 class Solution {
 public:
-    int solve(vector<array<int, 3>>& jobs, vector<int>& starts, vector<int>& dp, int i) {
-        if(i == jobs.size()) return 0;
-
-        int next = lower_bound(starts.begin(), starts.end(), jobs[i][1]) - starts.begin();
-
-        int take = jobs[i][2] + dp[next];
-        int skip = dp[i + 1];
-
-        return dp[i] = max(take, skip);
+    int solve(int i, vector<vector<int>>&jobs,vector<int>&dp){
+        if(i==jobs.size()) return 0;
+        if(dp[i]!=-1) return dp[i];
+        int next = lower_bound(jobs.begin() + i + 1, jobs.end(),
+                       vector<int>{jobs[i][1]}) - jobs.begin();
+        int skip= solve(i+1,jobs,dp);
+        int take= jobs[i][2]+ solve(next,jobs,dp);
+        return dp[i]=max(skip,take);
     }
-
     int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
-        int n = startTime.size();
-        vector<array<int, 3>> jobs(n);
+     vector<vector<int>>jobs(startTime.size(),vector<int>(3));
+     vector<int>dp(startTime.size(),-1);
+     for(int i=0;i<startTime.size();i++){
+        jobs[i][0]=startTime[i];
+        jobs[i][1]=endTime[i];
+        jobs[i][2]=profit[i];
+     }
+     sort(jobs.begin(),jobs.end());
+     return solve(0,jobs,dp);
 
-        for(int i = 0; i < n; i++)
-            jobs[i] = {startTime[i], endTime[i], profit[i]};
-
-        sort(jobs.begin(), jobs.end());
-
-        vector<int> starts(n), dp(n + 1, 0);
-
-        for(int i = 0; i < n; i++)
-            starts[i] = jobs[i][0];
-
-        for(int i = n - 1; i >= 0; i--)
-            solve(jobs, starts, dp, i);
-
-        return dp[0];
     }
 };
