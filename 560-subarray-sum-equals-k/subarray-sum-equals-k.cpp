@@ -1,16 +1,15 @@
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
-        unordered_map<int,int>freq;
-        freq[0]=1;
-        int sum=0,count=0;
+        unordered_map<int,int>subarr;
+        int count=0,prefixsum=0;
+        subarr[0]=1;
         for(int i=0;i<nums.size();i++){
-            sum+=nums[i];
-            if(freq.find(sum-k)!=freq.end()){
-                count+=freq[sum-k];
-            } 
-            freq[sum]++;           
+            prefixsum+=nums[i];
+            if(subarr.find(prefixsum-k)!=subarr.end()) count+=subarr[prefixsum-k];
+            subarr[prefixsum]++;
         }
         return count;
+        
     }
 };
