@@ -1,20 +1,33 @@
 class Solution {
+private:
+  struct node{
+    vector<string>ans;
+    node* child[26]={};
+  };
+
 public:
     vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
         sort(products.begin(),products.end());
-        vector<vector<string>> ans;
-        string prefix="";
-        for(char c: searchWord){
-            vector<string>suggestions;
-            prefix+=c;
-            auto it= lower_bound(products.begin(),products.end(),prefix);
-            for(int i=it-products.begin();i<products.size() && suggestions.size()<3;i++){
-               if(products[i].substr(0,prefix.size())!=prefix) break;
-               suggestions.push_back(products[i]);
+        node* root= new node();
+        for(string s: products){
+            node* rooot=root;
+            for(char c:s){
+                int idx= c-'a';
+                if(rooot->child[idx]==NULL) rooot->child[idx]=new node();
+                rooot=rooot->child[idx];
+                if(rooot->ans.size()<3) rooot->ans.push_back(s);
             }
-            ans.push_back(suggestions);
-        }
-      return ans;
+
         
-    }
+        }
+        node* thisnode=root;
+        vector<vector<string>> suggest;
+        for(char ch:searchWord){
+            int idx=ch-'a';
+            if(thisnode!=NULL) {thisnode=thisnode->child[idx];}
+            if(thisnode!=NULL) {suggest.push_back(thisnode->ans);}
+            else suggest.push_back({});
+        }
+        
+    return suggest;}
 };
