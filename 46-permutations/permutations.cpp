@@ -1,32 +1,26 @@
 class Solution {
 public:
-    vector<vector<int>> result;
-    int n;
-    unordered_set<int> this_set;
-
-    void solve(vector<int>& nums, vector<int>& temp) {
-        if (temp.size() == n) {
-            result.push_back(temp);
+    vector<vector<int>>ans;
+    void solver(vector<int>& nums,vector<int>&temp, vector<bool>&tick){
+        if(nums.size()==temp.size()){
+            ans.push_back(temp);
             return;
         }
-
-        for (int i = 0; i < n; i++) {
-            if (this_set.find(nums[i]) == this_set.end()) {
-                this_set.insert(nums[i]);
+        for(int i=0;i<nums.size();i++){
+            if(!tick[i]){
                 temp.push_back(nums[i]);
-
-                solve(nums, temp);
-
+                tick[i]=true;
+                solver(nums,temp,tick);
+                tick[i]=false;
                 temp.pop_back();
-                this_set.erase(nums[i]);
             }
         }
     }
-
     vector<vector<int>> permute(vector<int>& nums) {
-        n = nums.size();
-        vector<int> temp;
-        solve(nums, temp);
-        return result;
+        vector<int>temp;
+        vector<bool>tick(nums.size(),false);
+        solver(nums,temp,tick);
+        return ans;
+        
     }
 };
