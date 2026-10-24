@@ -24,9 +24,14 @@ public:
         vector<vector<string>> suggest;
         for(char ch:searchWord){
             int idx=ch-'a';
-            if(thisnode!=NULL) {thisnode=thisnode->child[idx];}
-            if(thisnode!=NULL) {suggest.push_back(thisnode->ans);}
-            else suggest.push_back({});
+                if(thisnode != NULL && thisnode->child[idx] != NULL) {
+        thisnode = thisnode->child[idx];
+        suggest.push_back(thisnode->ans);
+    }
+    else {
+        thisnode = NULL;
+        suggest.push_back({});
+    }
         }
         
     return suggest;}
