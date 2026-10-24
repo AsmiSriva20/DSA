@@ -1,65 +1,63 @@
-class TrieNode {
-public:
-    TrieNode* children[26];
-    bool isEnd;
-
-    TrieNode() {
-        isEnd = false;
-        for(int i = 0; i < 26; i++)
-            children[i] = NULL;
-    }
-};
 
 class Trie {
+private:
+struct node{
+   node* child[26];
+   bool isEnd;
+   node(){
+    isEnd=false;
+    for(int i=0;i<26;i++){
+        child[i]=NULL;
+    }
+   }
+   
+};
+
 public:
-    TrieNode* root;
-
+node* root;
     Trie() {
-        root = new TrieNode();
+        root= new node();
     }
-
+    
     void insert(string word) {
-        TrieNode* node = root;
-
-        for(char c : word) {
-            int i = c - 'a';
-
-            if(node->children[i] == NULL)
-                node->children[i] = new TrieNode();
-
-            node = node->children[i];
+        node* var=root;
+        for(char c: word){
+            int idx= c-'a';
+            if(var->child[idx]==NULL){
+                var->child[idx]=new node();
+            }
+            var=var->child[idx];
         }
-
-        node->isEnd = true;
+       var->isEnd=true;
+        
     }
-
+    
     bool search(string word) {
-        TrieNode* node = root;
-
-        for(char c : word) {
-            int i = c - 'a';
-
-            if(node->children[i] == NULL)
-                return false;
-
-            node = node->children[i];
+        node* some=root;
+        for(char ch:word){
+            int idx=ch-'a';
+            if(some-> child[idx]==NULL) return false;
+            some=some->child[idx];
         }
-
-        return node->isEnd;
+        return some->isEnd;
     }
-
+    
     bool startsWith(string prefix) {
-        TrieNode* node = root;
-
-        for(char c : prefix) {
-            int i = c - 'a';
-
-            if(node->children[i] == NULL)
-                return false;
-
-            node = node->children[i];
-        }
-
-        return true;
+        node* nodee=root;
+        for(char ch : prefix){
+            int idx=ch-'a';
+            if(nodee->child[idx]==NULL) return false;
+            nodee=nodee->child[idx];
+            
+        }return true;
+        
     }
 };
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
