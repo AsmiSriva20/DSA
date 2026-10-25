@@ -21,6 +21,7 @@ public:
                 if(indegree[it]==0) q.push(it);
             }
         }
-       return ans.size()==numCourses ?ans: vector<int>{}; 
+       if(ans.size()!=numCourses) return {}; 
+       return ans;
     }
 };
