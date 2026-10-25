@@ -2,34 +2,37 @@ class Solution {
 public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
         vector<vector<pair<int,int>>>adj(n+1);
-        for(auto it: times){
-            int u = it[0];
-            int v=it[1];
-            int tt=it[2];//time taken hai yeh
-            adj[u].push_back({v,tt});
+        for(int i=0;i<times.size();i++){
+            int source= times[i][0];
+            int destination=times[i][1];
+            int timetaken=times[i][2];
+            adj[source].push_back({destination,timetaken});
         }
-        vector<int>dist(n+1,INT_MAX);
-        using P=pair<int,int>;
+        using P= pair<int,int>;
         priority_queue<P, vector<P>, greater<P>>pq;
+        vector<int> time(n+1,INT_MAX);
+        time[k]=0;
         pq.push({0,k});
-        dist[k]=0;
         while(!pq.empty()){
             auto curr=pq.top();
             pq.pop();
-            int d=curr.first;
+            int t=curr.first;
             int node=curr.second;
-            for(auto it: adj[node]){
-                int next_node=it.first;
-                int timet=it.second;
-                int new_distance=d+timet;
-                if(new_distance<dist[next_node]){
-                    dist[next_node]=new_distance;
-                    pq.push({new_distance,next_node});
+            for(auto it:adj[node]){
+                int new_time=t+ it.second;
+                int next_node= it.first;
+                if(new_time<time[next_node]){ time[next_node]=new_time;
+                pq.push({new_time,next_node});
                 }
 
             }
+            
+
         }
-        return (*max_element(dist.begin()+1, dist.end())==INT_MAX)? -1: *max_element(dist.begin()+1, dist.end());
-        
+
+    for(int i=1;i<time.size();i++){
+        if(time[i]==INT_MAX) return -1;
+    }
+     return *max_element(time.begin()+1,time.end());  
     }
 };
